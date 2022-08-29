@@ -22,10 +22,10 @@ public class BicycleCatalogController {
     @RequestMapping("/{userId}")
     public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
 
-        UserRating ratings = restTemplate.getForObject("http://localhost:8083/bicycleratings/users/" + userId, UserRating.class);
+        UserRating ratings = restTemplate.getForObject("http://bicycle-ratings-service/bicycleratings/users/" + userId, UserRating.class);
 
         return ratings.getUserRating().stream().map(rating -> {
-            Bicycle bicycle = restTemplate.getForObject("http://localhost:8081/bicycles/" + rating.getBicycleId(), Bicycle.class);
+            Bicycle bicycle = restTemplate.getForObject("http://bicycle-management-service/bicycles/" + rating.getBicycleId(), Bicycle.class);
             if (bicycle != null) {
                 return new CatalogItem(bicycle.getName(), bicycle.getVendor(), rating.getRating());
             } else {
